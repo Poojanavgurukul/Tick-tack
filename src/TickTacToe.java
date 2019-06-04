@@ -4,28 +4,32 @@ import java.util.Scanner;
 
 public class TickTacToe {
     public static void main(String[] args) {
-        String[][] board = createBoard();
-        int count=0;
-        while (true) {
-            displayBoard(board);
-            String[][] updatedBoard = updateBoardForx(board);
-            displayBoard(updatedBoard);
-            if (winnerChecker(updatedBoard, " X ")) {
-                System.out.println("Winxer X");
-                break;
+
+        Board board=new Board();
+        board.displayBoard();
+
+        int i=0;
+        while (i<10){
+            Scanner inputObj = new Scanner(System.in);
+            System.out.println("Enter the Row");
+            int row = inputObj.nextInt();
+            System.out.println("Enter the Column");
+            int column = inputObj.nextInt();
+            board.update(row,column,turn(i));
+            board.displayBoard();
+            if(i==8){
+                System.out.println("Game over");
             }
-            count += 1;
-            if (count == 9) {
-                System.out.println("Game Over");
-                break;
-            }
-            updatedBoard = updateBoardForo(updatedBoard);
-            if (winnerChecker(updatedBoard, " O ")) {
-                System.out.println("Winxer O");
-                break;
-            }
-            count += 1;
+            i++;
         }
+
+    }
+
+    public static String turn(int number){
+        if(number%2==0){
+           return "x";
+        }
+        return "o";
     }
 
     public static String[][] createBoard() {
