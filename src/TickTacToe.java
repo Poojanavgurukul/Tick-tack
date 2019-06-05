@@ -1,39 +1,19 @@
 import java.util.Scanner;
-
 public class TickTacToe {
+    public static final String ANSI_RESET = "\u001B[0m";
+    public static final String ANSI_RED = "\u001B[31m";
     public static void main(String[] args) {
         Game game=new Game();
-        Turn player=new Turn();
-        Board board=new Board();
-        board.displayBoard();
-        game.display();
-        int i=0;
-        while (true){
-            Position placeX=getInput();
-            board.update(placeX,player.changedTurn());
-            game.display();
-            board.displayBoard();
-            if(game.winnerChecker(board.board,player.getSymbol())){
-                System.out.println("winner"+player.getSymbol());
-                break;
-            }
-            i++;
-            if(i==9){
-                System.out.println("Game over");
-                break;
-            }
+        System.out.println(game.display());
+        while (game.isRunning()){
+            game.play(getInput());
+            System.out.println(game.display());
         }
-
-    }
-
-    public static String[][] createBoard() {
-        String[][] board = new String[][]{
-                {" 00", " 01", " 02"},
-                {" 10", " 11", " 12"},
-                {" 20", " 21", " 22"}
-        };
-
-        return board;
+        if (game.winnerChecker()==null){
+            System.out.println(ANSI_RED+"game over"+ANSI_RESET);
+            return;
+        }
+        System.out.println(game.winnerChecker());
     }
 
     public static Position getInput(){
