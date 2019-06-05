@@ -1,35 +1,29 @@
-import java.util.Arrays;
-import java.util.List;
 import java.util.Scanner;
 
 public class TickTacToe {
     public static void main(String[] args) {
-
+        Game game=new Game();
+        Turn player=new Turn();
         Board board=new Board();
         board.displayBoard();
-
+        game.display();
         int i=0;
-        while (i<10){
-            Scanner inputObj = new Scanner(System.in);
-            System.out.println("Enter the Row");
-            int row = inputObj.nextInt();
-            System.out.println("Enter the Column");
-            int column = inputObj.nextInt();
-            board.update(row,column,turn(i));
+        while (true){
+            Position placeX=getInput();
+            board.update(placeX,player.changedTurn());
+            game.display();
             board.displayBoard();
-            if(i==8){
-                System.out.println("Game over");
+            if(game.winnerChecker(board.board,player.getSymbol())){
+                System.out.println("winner"+player.getSymbol());
+                break;
             }
             i++;
+            if(i==9){
+                System.out.println("Game over");
+                break;
+            }
         }
 
-    }
-
-    public static String turn(int number){
-        if(number%2==0){
-           return "x";
-        }
-        return "o";
     }
 
     public static String[][] createBoard() {
@@ -42,55 +36,14 @@ public class TickTacToe {
         return board;
     }
 
-    public static void displayBoard(String[][] board) {
-        for (String[] boardData : board) {
-            for (String boardData1 : boardData) {
-                System.out.print(boardData1 + "|");
-            }
-            System.out.print("\n");
-            System.out.println("------------");
-        }
+    public static Position getInput(){
+        Scanner input =new Scanner(System.in);
+        System.out.println("Enter position for row");
+        int row=input.nextInt();
+        System.out.println("Enter position for column");
+        int column=input.nextInt();
+        Position place=new Position(row,column);
+        return place;
     }
 
-    public static String[][] updateBoardForo(String[][] board) {
-        Scanner inputObj = new Scanner(System.in);
-        System.out.println("Player O");
-        System.out.println("Enter the Row position '0'");
-        int secondPlayerRow = inputObj.nextInt();
-        System.out.println("Enter the Column position '1'");
-        int secondPlayerColumn = inputObj.nextInt();
-        board[secondPlayerRow][secondPlayerColumn] = " O ";
-        return board;
-    }
-    public static String[][] updateBoardForx(String[][] board) {
-        Scanner inputObj = new Scanner(System.in);
-        System.out.println("Player X");
-        System.out.println("Enter the Row position '0'");
-        int firstPlayerRow = inputObj.nextInt();
-        System.out.println("Enter the Column position '1'");
-        int firstPlayerColumn = inputObj.nextInt();
-        board[firstPlayerRow][firstPlayerColumn] = " X ";
-        return board;
-    }
-
-    public static boolean winnerChecker(String[][] board, String a) {
-        if (board[0][0].equals(a) && board[0][1].equals(a) && board[0][2].equals(a)) {
-            return true;
-        } else if (board[1][0].equals(a) && board[1][1].equals(a) && board[1][2].equals(a)) {
-            return true;
-        } else if (board[2][0].equals(a) && board[2][1].equals(a) && board[2][2].equals(a)) {
-            return true;
-        } else if (board[0][0].equals(a) && board[1][1].equals(a) && board[2][2].equals(a)) {
-            return true;
-        } else if (board[0][2].equals(a) && board[1][1].equals(a) && board[2][0].equals(a)) {
-            return true;
-        } else if (board[0][0].equals(a) && board[1][0].equals(a) && board[2][0].equals(a)) {
-            return true;
-        } else if (board[0][1].equals(a) && board[1][1].equals(a) && board[2][1].equals(a)) {
-            return true;
-        } else if (board[0][2].equals(a) && board[1][2].equals(a) && board[2][2].equals(a)) {
-            return true;
-        }
-        return false;
-    }
 }
